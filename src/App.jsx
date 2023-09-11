@@ -9,7 +9,7 @@ export default function App() {
   return (
     <main className="font-home">
       <Hero />
-      {/* <FeaturedMovies /> */}
+      <FeaturedMovies />
       <Footer/>
     </main>
   )

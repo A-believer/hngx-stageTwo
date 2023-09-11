@@ -6,7 +6,7 @@ const API_URL = 'https://api.themoviedb.org/3'
 
 export async function fetchMoviesFromApi() {
    try {
-    const response = await axios.get(`${API_URL}/movie/top_rated?api_key=${API_KEY}`);
+    const response = await axios.get(`${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
     return response.data.results;
   } catch (error) {
     console.error('Error fetching top-rated movies:', error);
@@ -23,15 +23,15 @@ export async function fetchMovieGenres() {
     console.error('Error fetching movie genres:', error);
     throw error;
   }
-};
+}
 
-export async function fetchMovieDetails (movieId) {
+export async function fetchMovieDetailsWithId (id) {
   try {
-    const response = await axios.get(`${API_URL}/movie/${movieId}?api_key=${API_KEY}`);
+    const response = await axios.get(`${API_URL}/movie/${id}?api_key=${API_KEY}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
     throw error;
   }
-};
+}
 

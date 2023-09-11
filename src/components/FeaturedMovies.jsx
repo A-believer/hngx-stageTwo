@@ -1,62 +1,67 @@
 import { useEffect, useState } from "react"
-import { fetchMoviesFromApi, fetchMovieGenres, fetchMovieDetails } from "../movieApi"
+import { fetchMoviesFromApi, fetchMovieGenres, fetchMovieDetailsWithId } from "../movieApi"
 import { Link } from "react-router-dom";
+import {FaAngleRight} from "react-icons/fa"
+import MovieCard from "./MovieCard"
 
 
 export default function FeaturedMovies() {
-   const [movies, setMovies] = useState([])
+  const [movies, setMovies] = useState([])
+  const [movieDetail, setMovieDetail] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [genres, setGenres] = useState([]);
+  const [loadingDetails, setLoadingDetails] = useState(true)
+  // const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     fetchMoviesFromApi()
     .then((moviesData) => {
       setMovies(moviesData);
-      console.log(moviesData)
+      const movieData = movies.map(movie => fetchMovieDetailsWithId(movie.id).then(data => data))
+
+      Promise.all(movieData)
+        .then(movies => {
+          setMovieDetail(movies)
+          setLoadingDetails(false)
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        setLoadingDetails(false);
+        })
+      
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error:', error);
         setLoading(false);
       });
+    
+    console.log(movies)
+    console.log(movieDetail)
 
-     fetchMovieGenres()
-      .then((genreData) => {
-        setGenres(genreData);
-      })
-      .catch((error) => {
-        console.error('Error fetching movie genres:', error);
-      });
   }, [])
 
-  const getGenreNames = (genreIds) => {
-    const genreNames = [];
-    for (const genreId of genreIds) {
-      const genre = genres.find((g) => g.id === genreId);
-      if (genre) {
-        genreNames.push(genre.name);
-      }
-    }
-    return genreNames.join(', ');
-  };
-
-    const getPosterPath = (movie) => {
-    return movie.poster_path
-      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-      : 'No poster available';
-  };
+  
 
   return (
-    <section>
-      <h1>Featured Movies</h1>
+    <section className="lg:px-24 md:px-6 px-4 pb-20 my-20">
+      <div className="flex justify-between items-center mb-11 gap-x-20 flex-wrap gap-y-2">
+        <h1 className="sm:text-4xl text-2xl font-bold">Featured Movies</h1>
+        <button className="flex items-center md:text-lg textsm font-normal text-[#BE123C] gap-x-2 ">See more <FaAngleRight/></button>
+      </div>
+      
       <>
         {
-          loading ? 
+          (loading && loadingDetails) ? 
             <h1>Loading...</h1> :
 
-            <div>
-             { movies.map((movie) => (
-               <Link to={`/movies/${movie.id}`} key={movie.id}>{movie.title} <img src={getPosterPath(movie)} alt={movie.title} /></Link>
+            <div className="grid xl:grid-cols-4 md:grid-col-3 grid-cols-1 xl:gap-20 gap-10 mx-5">
+             { movies.map((movie, index) => (
+               <MovieCard
+                 key={movie.id}
+                 id={movie.id}
+                 movieTitle={movie.title} 
+                 moviePoster={movie.poster_path}
+                 />
               ))}
             </div>
         }
