@@ -9,7 +9,11 @@ export default {
       'home': 'DM Sans, sans-serif',
       'detail': 'Poppins, sans-serif',
     },
-    extend: {},
+    extend: {
+       backgroundImage : {
+      "hero" : "url('/src/assets/hero.png')"
+      }
+    },
   },
   plugins: [],
 }
