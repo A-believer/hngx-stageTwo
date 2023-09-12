@@ -25,16 +25,21 @@ export default function FeaturedMovies() {
     fetchMovieGenre()
       .then(genre => {
         setGenres(genre)
-        console.log(genre)
+        
       }).catch(error => {
       console.error('Error:', error);
     })
     console.log(movies)
   }, [])
 
-  function getMovieGenre(genreId) {
-     return genreId?.map((id) => genres?.find((genre) => genre.id === id).name)
+  function getMovieGenre(genreId) { 
+    if (genres) {
+      return genreId?.map((id) => genres?.find((genre) => genre.id === id).name)
      .join(', ')
+    } else {
+      return "genres"
+    }
+     
   }
 
   return (
@@ -45,23 +50,23 @@ export default function FeaturedMovies() {
       </div>
       
       <>
-        {
-          (loading) ? 
-            <h1>Loading...</h1> :
+        
+          {(loading) && 
+            <h1 className="flex items-center justify-center text-6xl animate-pulse ">Loading...</h1>} 
 
             <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 xl:gap-20 gap-10 sm:mx-0 mx-5">
-             { movies.map((movie) => (
-               <MovieCard
-                 releaseDate={movie.release_date.slice(0, 4)}
-                 key={movie.id}
-                 id={movie.id}
-                 movieTitle={movie.title} 
-                 moviePoster={movie.poster_path}
-                 movieGenre={getMovieGenre(movie.genre_ids)}
-                 />
-              ))}
+          {movies.map((movie) => (
+            <MovieCard
+              releaseDate={movie.release_date.slice(0, 4)}
+              key={movie.id}
+              id={movie.id}
+              movieTitle={movie.title}
+              moviePoster={movie.poster_path}
+              movieGenre={getMovieGenre(movie.genre_ids)}
+            />
+          ))}
             </div>
-        }
+        
       </>
     </section>
   )
