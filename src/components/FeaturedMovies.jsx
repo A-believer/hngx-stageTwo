@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { fetchMoviesFromApi, fetchMovieDetailsWithId, fetchMovieGenre } from "../movieApi"
+import { fetchMoviesFromApi, fetchMovieGenre } from "../movieApi"
 import {FaAngleRight} from "react-icons/fa"
 import MovieCard from "./MovieCard"
 
@@ -31,7 +31,7 @@ export default function FeaturedMovies() {
   }, [])
 
   function getMovieGenre(genreId) {
-    return genreId?.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
+     genreId?.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
   }
 
   return (
