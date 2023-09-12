@@ -13,6 +13,7 @@ export default function FeaturedMovies() {
     fetchMoviesFromApi()
     .then((moviesData) => {
       setMovies(moviesData.slice(0, 10));
+      console.log(moviesData)
         setLoading(false);
       })
       .catch((error) => {
@@ -24,6 +25,7 @@ export default function FeaturedMovies() {
     fetchMovieGenre()
       .then(genre => {
         setGenres(genre)
+        console.log(genre)
       }).catch(error => {
       console.error('Error:', error);
     })
@@ -31,7 +33,7 @@ export default function FeaturedMovies() {
   }, [])
 
   function getMovieGenre(genreId) {
-     genreId?.map((id) => genres.find((genre) => genre.id === id)?.name).join(', ')
+     return genreId.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
   }
 
   return (

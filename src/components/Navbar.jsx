@@ -67,7 +67,7 @@ export default function Navbar() {
         <FaSearch/>
         </button>
 
-        {searchModal && <ul className="border border-[#BE123C] absolute top-12 w-full bg-white text-black p-4 rounded-xl" ref={searchContainerRef}>
+        {searchModal && <ul className="border border-[#BE123C] absolute top-12 w-full bg-white text-black p-4 rounded-xl z-[99]" ref={searchContainerRef}>
           {search.map(result => (
             <li
               className="py-4 border-b border-[#BE123C]/40"

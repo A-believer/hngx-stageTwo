@@ -6,7 +6,7 @@ const API_URL = 'https://api.themoviedb.org/3'
 
 export async function fetchMoviesFromApi() {
    try {
-    const response = await axios.get(`${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
+    const response = await axios.get(`${API_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`);
     return response.data.results;
   } catch (error) {
     console.error('Error fetching top-rated movies:', error);
