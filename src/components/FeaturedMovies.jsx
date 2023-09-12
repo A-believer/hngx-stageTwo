@@ -33,7 +33,8 @@ export default function FeaturedMovies() {
   }, [])
 
   function getMovieGenre(genreId) {
-     return genreId.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
+     return genreId?.map((id) => genres?.find((genre) => genre.id === id).name)
+     .join(', ')
   }
 
   return (
