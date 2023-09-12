@@ -12,7 +12,7 @@ export default function FeaturedMovies() {
   useEffect(() => {
     fetchMoviesFromApi()
     .then((moviesData) => {
-      setMovies(moviesData);
+      setMovies(moviesData.slice(0, 10));
         setLoading(false);
       })
       .catch((error) => {
@@ -31,7 +31,7 @@ export default function FeaturedMovies() {
   }, [])
 
   function getMovieGenre(genreId) {
-     genreId?.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
+     genreId?.map((id) => genres.find((genre) => genre.id === id)?.name).join(', ')
   }
 
   return (
