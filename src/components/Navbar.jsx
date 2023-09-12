@@ -26,7 +26,7 @@ export default function Navbar() {
     }
   }
 
-  const handleResultClick = (id) => {
+  const handleResultClick = () => {
     setSearchModal(false);
   };
 
