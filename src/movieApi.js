@@ -14,21 +14,31 @@ export async function fetchMoviesFromApi() {
   }
 }
 
-
-export async function fetchMovieGenres() {
-  try {
-    const response = await axios.get(`${API_URL}/genre/movie/list?api_key=${API_KEY}`);
-    return response.data.genres;
-  } catch (error) {
-    console.error('Error fetching movie genres:', error);
-    throw error;
-  }
-}
+ export const searchMovies = async (query) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/search/movie?api_key=${API_KEY}&query=${query}`);
+      return response.data.results;
+  
+    } catch (error) {
+      console.error('Error searching for movies:', error);
+    }
+  };
 
 export async function fetchMovieDetailsWithId (id) {
   try {
     const response = await axios.get(`${API_URL}/movie/${id}?api_key=${API_KEY}`);
     return response.data;
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+    throw error;
+  }
+}
+
+export async function fetchMovieGenre () {
+  try {
+    const response = await axios.get(`${API_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`);
+    return response.data.genres;
   } catch (error) {
     console.error('Error fetching movie details:', error);
     throw error;

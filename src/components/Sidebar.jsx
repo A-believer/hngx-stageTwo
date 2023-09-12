@@ -9,8 +9,8 @@ import { Link } from "react-router-dom"
 export default function Sidebar() {
   return (
     <aside className="py-12 border border-black/30 rounded-br-[45px] rounded-tr-[45px] w-[30vw]">
-      <Link to={`/`} className="mx-5 flex gap-x-6 mb-20 items-center">
-        <img src={logo} alt="website logo" className="md:w-12 w-8 md:h-12 h-8 mx-auto"/>
+      <Link to={`/`} className=" flex gap-x-2 xl:pl-16 lg:pl-10 pl-0 mb-16 items-center">
+        <img src={logo} alt="website logo" className="md:w-12 w-8 md:h-12 h-8 lg:mx-0 mx-auto"/>
         <h1 className="text-[#333] text-2xl font-home font-bold xl:block hidden">MovieBox</h1>
       </Link>
 

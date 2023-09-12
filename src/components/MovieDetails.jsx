@@ -18,11 +18,11 @@ export default function MovieDetails({movie, movieBackdrop, movieTitle, movieDur
       <div className="flex lg:justify-between lg:flex-nowrap flex-wrap  items-center my-7 whitespace-nowrap gap-y-3">
         <div className="flex items-center flex-wrap gap-x-5 gap-y-3">
           <p className="text-[#404040] text-2xl flex gap-x-3 flex-wrap">
-            <span>{movieTitle}</span>•
-            <span>{yearOfRelease}</span>•
+            <span data-testid="movie-title">{movieTitle}</span>•
+            <span data-testid="movie-release-date">{yearOfRelease}</span>•
             <span>PG-13</span>•
-            <span>{movieDuration} minutes</span></p>
-          <p className="flex gap-x-6 text-[#B91C1C] text-[15px] font-medium">{genre}</p>
+            <span data-testid="movie-runtime">{movieDuration} minutes</span></p>
+          <p className="flex gap-x-6 flex-wrap text-[#B91C1C] text-[15px] font-medium">{genre}</p>
         </div>
 
         <div className="flex items-center gap-x-2">
@@ -34,7 +34,7 @@ export default function MovieDetails({movie, movieBackdrop, movieTitle, movieDur
       <div className="flex justify-center lg:flex-row flex-col items-center gap-x-6 xl:text-xl lg:text-lg text-base font-normal text-[#333] gap-y-10">
         
         <div className="flex flex-col gap-y-9 lg:w-2/3 w-full">
-          <p>{overview}</p>
+          <p data-testid="moview-overview">{overview}</p>
           <p>Director: <span className="text-[#BE123C]">Joseph Kosinsk</span></p>
           <p>Writers: <span className="text-[#BE123C]"> Jim Cash, Jack Epps Jr,  Peter Craig</span></p>
           <p>Stars: <span className="text-[#BE123C]">Tom Cruise, Jennifer Connelly, Miles Telle</span></p>

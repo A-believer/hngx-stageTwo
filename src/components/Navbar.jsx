@@ -1,8 +1,49 @@
 import { Link } from "react-router-dom"
 import logo from "../assets/logo.png"
 import {FaSearch} from "react-icons/fa"
+import { searchMovies } from "../movieApi"
+import { useEffect, useRef, useState } from "react"
 
 export default function Navbar() {
+  const [searchModal, setSearchModal] = useState(false)
+  const [query, setQuery] = useState("")
+  const [search, setSearch] = useState("")
+
+  const searchContainerRef = useRef(null);
+
+  function handleInputChange(e) {
+    setQuery(e.target.value)
+  }
+  async function handleSearchQuery(e) {
+    e.preventDefault()
+    try {
+      const results = await searchMovies(query);
+      setSearchModal(true)
+      setSearch(results);
+      console.log(results)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const handleResultClick = (id) => {
+    setSearchModal(false);
+  };
+
+  const handleClickOutside = (e) => {
+    if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
+      setSearchModal(false);
+    }
+  };
+
+   useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+   }, []);
+  
+
   return (
     <nav className="flex justify-between py-4">
       
@@ -13,11 +54,32 @@ export default function Navbar() {
       
       <label htmlFor="search" className="relative flex items-center lg:gap-6 gap-4 xl:w-[500px] lg:w-[400px] md:w-[300px] w-[200px] h-9 md:text-base text-sm">
         <input
+          value={query}
+          onChange={handleInputChange}
           name="search"
           placeholder="What do you want to watch?"
           type="text"
-          className="bg-transparent border border-white pl-2.5 py-1.5 w-full rounded-md" />
-        <FaSearch className="absolute right-[10px]"/>
+          className="bg-transparent border border-white pl-2.5 py-1.5 w-full rounded-md outline-none font-semibold" />
+        <button
+          onClick={handleSearchQuery}
+          type="submit"
+          className="absolute right-[10px]">
+        <FaSearch/>
+        </button>
+
+        {searchModal && <ul className="border border-[#BE123C] absolute top-12 w-full bg-white text-black p-4 rounded-xl" ref={searchContainerRef}>
+          {search.map(result => (
+            <li
+              className="py-4 border-b border-[#BE123C]/40"
+              key={result.id}
+              onClick={() =>
+                handleResultClick(result.id)}>
+              <Link to={`/movies/${result.id}`}>
+                <p className="font-bold">{result.title}</p>
+                <p className="italic mt-2">{result.release_date}</p> 
+              </Link></li>
+          ))}
+        </ul>}
       </label>
       
       <div className="flex items-center lg:gap-6 md:gap-4 gap-2">
@@ -27,6 +89,7 @@ export default function Navbar() {
   <path d="M3.59998 15.6C3.59998 14.9373 4.13723 14.4 4.79998 14.4H19.2C19.8627 14.4 20.4 14.9373 20.4 15.6C20.4 16.2628 19.8627 16.8 19.2 16.8H4.79998C4.13723 16.8 3.59998 16.2628 3.59998 15.6Z" fill="white"/>
 </svg></p>
         </div>
+        
       </nav>
     
   )

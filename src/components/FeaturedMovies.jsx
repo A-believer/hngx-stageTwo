@@ -1,33 +1,18 @@
 import { useEffect, useState } from "react"
-import { fetchMoviesFromApi, fetchMovieGenres, fetchMovieDetailsWithId } from "../movieApi"
-import { Link } from "react-router-dom";
+import { fetchMoviesFromApi, fetchMovieDetailsWithId, fetchMovieGenre } from "../movieApi"
 import {FaAngleRight} from "react-icons/fa"
 import MovieCard from "./MovieCard"
 
 
 export default function FeaturedMovies() {
   const [movies, setMovies] = useState([])
-  const [movieDetail, setMovieDetail] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [loadingDetails, setLoadingDetails] = useState(true)
-  // const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     fetchMoviesFromApi()
     .then((moviesData) => {
       setMovies(moviesData);
-      const movieData = movies.map(movie => fetchMovieDetailsWithId(movie.id).then(data => data))
-
-      Promise.all(movieData)
-        .then(movies => {
-          setMovieDetail(movies)
-          setLoadingDetails(false)
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        setLoadingDetails(false);
-        })
-      
         setLoading(false);
       })
       .catch((error) => {
@@ -35,12 +20,19 @@ export default function FeaturedMovies() {
         setLoading(false);
       });
     
+    
+    fetchMovieGenre()
+      .then(genre => {
+        setGenres(genre)
+      }).catch(error => {
+      console.error('Error:', error);
+    })
     console.log(movies)
-    console.log(movieDetail)
-
   }, [])
 
-  
+  function getMovieGenre(genreId) {
+    return genreId?.map((id) => genres.find((genre) => genre.id === id).name).join(', ')
+  }
 
   return (
     <section className="lg:px-24 md:px-6 px-4 pb-20 my-20">
@@ -51,16 +43,18 @@ export default function FeaturedMovies() {
       
       <>
         {
-          (loading && loadingDetails) ? 
+          (loading) ? 
             <h1>Loading...</h1> :
 
-            <div className="grid xl:grid-cols-4 md:grid-col-3 grid-cols-1 xl:gap-20 gap-10 mx-5">
-             { movies.map((movie, index) => (
+            <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 xl:gap-20 gap-10 sm:mx-0 mx-5">
+             { movies.map((movie) => (
                <MovieCard
+                 releaseDate={movie.release_date.slice(0, 4)}
                  key={movie.id}
                  id={movie.id}
                  movieTitle={movie.title} 
                  moviePoster={movie.poster_path}
+                 movieGenre={getMovieGenre(movie.genre_ids)}
                  />
               ))}
             </div>

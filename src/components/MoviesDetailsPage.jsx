@@ -27,6 +27,11 @@ export default function MoviesDetailsPage() {
     <p key={genre.id}>{genre.name}</p>
   ))
 
+  const date = new Date(movie?.release_date)
+  const dateUTC = new Date(date)
+
+  const dateToUTCString = dateUTC.toDateString()
+
   return (
       <main className="font-detail flex w-full lg:gap-x-10 gap-x-6">
       <Sidebar />
@@ -37,7 +42,7 @@ export default function MoviesDetailsPage() {
             overview={movie.overview}
             voteAverage={movie.vote_average}
             genre={genre}
-            yearOfRelease={(movie.release_date).slice(0, 4)}
+            yearOfRelease={dateToUTCString}
             movieDuration={movie.runtime}
             movieTitle={movie.title}
             movieBackdrop={movie.backdrop_path}
